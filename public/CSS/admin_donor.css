@@ -1,0 +1,101 @@
+body {
+    background: #eef3f8;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.navbar {
+    box-shadow: 0 5px 15px rgba(0, 0, 0, .15);
+}
+
+.stat-card {
+    background: linear-gradient(135deg, #0d6efd, #5f8fff);
+    color: white;
+    border-radius: 18px;
+    padding: 18px;
+    min-height: 130px;
+}
+
+.stat-card h1 {
+    font-size: 48px;
+    margin-bottom: 5px;
+}
+
+.stat-card h5 {
+    font-size: 22px;
+}
+
+.card {
+    margin-top: 25px;
+    border-radius: 15px;
+    padding: 15px;
+}
+
+
+.table {
+    margin-bottom: 0;
+}
+
+.table thead th {
+    background: #0d6efd;
+    color: white;
+    vertical-align: middle;
+}
+table td{
+
+padding:22px 12px;
+
+}
+
+.table th{
+
+padding:18px;
+
+font-size:17px;
+
+}
+
+.profile {
+    width: 75px;
+    height: 75px;
+    border-radius: 50%;
+    border: 4px solid white;
+    box-shadow: 0 5px 12px rgba(0, 0, 0, .25);
+    transition: .3s;
+}
+
+.aadhar {
+    width: 110px;
+    height: 90px;
+    border-radius: 10px;
+    border: 2px solid #ddd;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, .15);
+    transition: .3s;
+
+}
+
+td {
+    padding: 18px !important;
+}
+
+.form-control{
+
+border-radius:30px;
+
+padding:12px 22px;
+
+font-size:17px;
+
+border:none;
+
+box-shadow:0 6px 18px rgba(0,0,0,.12);
+
+}
+.btn-light{
+
+border-radius:30px;
+
+padding:8px 22px;
+
+font-weight:600;
+
+}

@@ -1,0 +1,145 @@
+body {
+    background: linear-gradient(135deg, #e8f4ff, #f8fbff);
+    font-family: 'Segoe UI', sans-serif;
+}
+
+.navbar {
+    background: #0d6efd !important;
+    padding: 12px 25px;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, .15);
+}
+
+.navbar-brand {
+    color: white !important;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.form-control {
+    border-radius: 25px;
+}
+
+.btn-outline-success {
+    border-radius: 25px;
+    color: white;
+    border: 2px solid white;
+}
+
+.card {
+    border: none;
+    border-radius: 18px;
+    overflow: hidden;
+    transition: .4s;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, .12);
+}
+
+.row {
+    padding: 40px;
+}
+
+.col {
+    margin-bottom: 25px;
+}
+
+.card-img-top {
+    height: 240px;
+    object-fit: contain;
+    padding: 20px;
+    background: #f5f9ff;
+}
+
+.card-title {
+    text-align: center;
+    font-size: 23px;
+    color: #0d6efd;
+    font-weight: 700;
+}
+
+.card-text {
+    text-align: center;
+    color: #555;
+    min-height: 70px;
+}
+
+.card-body .btn {
+    width: 100%;
+    border-radius: 30px;
+    font-weight: 600;
+    margin-top: 10px;
+}
+
+.btn-close {
+    width: 25px;
+    height: 25px;
+}
+
+.card-img-top-card {
+    height: 190px;
+    width: 100%;
+    object-fit: contain;
+    background: white;
+    padding: 15px;
+
+}
+
+
+.card-cards {
+    border: none;
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, .12);
+    transition: .3s;
+    background: white;
+}
+
+.card-body-card{
+    padding:18px;
+}
+
+.card-body-card h5{
+    font-size:24px;
+    font-weight:600;
+    margin-bottom:15px;
+}
+
+.card-body-card p{
+    margin-bottom:10px;
+    font-size:17px;
+}
+
+.card-body-card b{
+    color:#0d47a1;
+}
+
+.logout-btn{
+    background: linear-gradient(135deg,#ff4d4d,#d90429);
+    color:#fff;
+    border:2px solid #fff;
+    border-radius:25px;
+    padding:8px 20px;
+    font-weight:600;
+    transition:0.3s;
+}
+
+.logout-btn:hover{
+    background: linear-gradient(135deg,#ff4d4d,#d90429);
+    color:#fff;
+    border-color:#fff;
+    transform:translateY(-2px);
+    box-shadow:0 8px 18px rgba(217,4,41,.4);
+}
+
+/* Logo */
+.logo{
+    width:60px;
+    height:55px;
+    object-fit:contain;
+}
+
+/* Website Name */
+.site-name{
+    font-size:30px;
+    font-weight:bold;
+    margin-left:15px;
+    letter-spacing:1px;
+}

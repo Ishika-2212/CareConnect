@@ -1,0 +1,323 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Donor Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.8.3/angular.min.js"></script>
+    <link rel="stylesheet" href="CSS/dash_donor.css">
+    <link rel="icon" type="image/png" href="favicon/favicon-96x96.png" sizes="96x96">
+    <link rel="icon" type="image/svg+xml" href="favicon/favicon.svg">
+    <link rel="shortcut icon" href="favicon/favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-touch-icon.png">
+    <link rel="manifest" href="favicon/site.webmanifest">
+    <script>
+        var myModule = angular.module("Module", []);
+        let myController = myModule.controller("Controller", function ($scope, $http) {
+            // show all medicine data
+            $scope.doShowMedicine = function () {
+                let url = "/fetch_medicine";
+                $http.get(url).then(function (resp) {
+                    $scope.jsonArray = resp.data;
+                }, function (err) {
+                    alert(err);
+                });
+            }
+            // show all equipments data
+            $scope.doShowEquipments = function () {
+                let url = "/fetch_equipment";
+                $http.get(url).then(function (resp) {
+                    $scope.jsonArray = resp.data;
+                }, function (err) {
+                    alert(err);
+                });
+            }
+            $scope.settings = function () {
+                let url = "/setting";
+                $http.get(url).then(function (resp) {
+                    $scope.jsonArray = resp.data;
+                }, function (err) {
+                    alert(err);
+                });
+            }
+            // show data of particular email
+            $scope.showMedicines = function () {
+                let url = "/getMedicinesData?email=" + $scope.searchEmail;
+                $http.get(url).then(function (resp) {
+                    $scope.jsonArray = resp.data;
+                }, function (err) {
+                    alert(err.data);
+                });
+            }
+            $scope.showEquipments = function () {
+                let url = "/getEquipmentsData?email=" + $scope.searchEmail;
+                $http.get(url).then(function (resp) {
+                    $scope.jsonArray = resp.data;
+                }, function (err) {
+                    alert(err.data);
+                });
+            }
+            // delete record from table 
+            $scope.doUpdate = function (rid) {
+                let url = "/deletedata?email=" + rid;
+                $http.get(url).then(function (resp) {
+                    alert(resp.data);
+                    $scope.doShowMedicine();
+                }, function (err) {
+                    alert(err.data);
+                });
+            }
+            $scope.doUpdateData = function (rid) {
+                let url = "/deleterecord?rid=" + rid;
+                $http.get(url).then(function (resp) {
+                    alert(resp.data);
+                    $scope.doShowEquipments();
+                }, function (err) {
+                    alert(err.data);
+                });
+            }
+            //update pswd in setting modal
+            $scope.updatePassword = function () {
+                let url = "/update-password?emailKuch=" + $scope.txtEmailSettings +
+                    "&oldPwdKuch=" + $scope.oldPwd +
+                    "&newPwdKuch=" + $scope.newPwd;
+                console.log(url);   // Check the URL in browser console
+                $http.get(url).then(function (resp) {
+                    alert(resp.data);
+                }, function (err) {
+                    alert(err.data);
+                });
+            }
+
+        })
+    </script>
+    <script>
+        function setEmail() {
+            document.getElementById("txtEmail").value = localStorage.getItem("activeUser");
+            document.getElementById("txtEmail").readOnly = true;
+        }
+    </script>
+</head>
+
+<body ng-app="Module" ng-controller="Controller">
+    <!-- nav bar -->
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid">
+            <a class="navbar-brand d-flex align-items-center" href="#">
+                <img src="pics/logo.avif" class="logo" alt="Logo">
+                <span class="site-name">CareConnect</span>
+            </a>
+            <div class="ms-auto"><a class="btn btn-outline-danger logout-btn" href="/"><i
+                        class="bi bi-box-arrow-right"></i> Logout</a></div>
+        </div>
+    </nav>
+    <div class="row row-cols-1 row-cols-md-3 g-3">
+        <!-- Profile Card -->
+        <div class="col">
+            <div class="card">
+                <img src="pics/profilepic.png" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">Profile</h5>
+                    <p class="card-text">Manage your personal profile and contact details.</p>
+                    <a href="/donor_page" class="btn btn-primary">Donor Profile</a>
+                </div>
+            </div>
+        </div>
+        <!-- Avail Medicine Card -->
+        <div class="col">
+            <div class="card">
+                <img src="pics/medicinepic.webp" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">Medicine</h5>
+                    <p class="card-text">Add medicines for donation.</p>
+                    <a href="/avail_medicine" class="btn btn-primary">Avail Medicine</a>
+                </div>
+            </div>
+        </div>
+        <!-- Medical Equipment Card -->
+        <div class="col">
+            <div class="card">
+                <img src="pics/medical_equipment.png" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">Medical Equipment</h5>
+                    <p class="card-text">Add medical equipment for donation.</p>
+                    <a href="/avail_equipment" class="btn btn-primary">Avail equipment</a>
+                </div>
+            </div>
+        </div>
+        <!-- Medicine Manager Card -->
+        <div class="col">
+            <div class="card">
+                <img src="pics/Medicine_manager.png" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">Medicine Manager</h5>
+                    <p class="card-text">View, update, or remove donated medicines.</p>
+                    <a href="#" class="btn btn-primary" ng-click="showMedicines()" data-bs-toggle="modal"
+                        data-bs-target="#medicineModal">Open</a>
+                    <!-- Modal -->
+                    <div class="modal fade" id="medicineModal" tabindex="-1">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Medicine Manager</h5>
+                                    <img src="pics/cross.png" alt="" class="btn-close" data-bs-dismiss="modal">
+                                </div>
+                                <div class="modal-body">
+                                    <div class="row mb-3">
+                                        <div class="col-md-9">
+                                            <input type="email" class="form-control" placeholder="Enter Email ID"
+                                                ng-model="searchEmail">
+                                        </div>
+
+                                        <div class="col-md-3">
+                                            <button class="btn btn-primary w-100" ng-click="showMedicines()">
+                                                Search
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <table class="table table-bordered">
+                                        <thead class="table-primary">
+                                            <tr>
+                                                <th>Medicine</th>
+                                                <th>Expiry</th>
+                                                <th>Quantity</th>
+                                                <th>Packing</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tr ng-repeat="med in jsonArray">
+                                            <td>{{med.medname}}</td>
+                                            <td>{{med.expdate | date:'dd/MM/yyyy'}}</td>
+                                            <td>{{med.qty}}</td>
+                                            <td>{{med.packing}}</td>
+                                            <td>
+                                                <button class="btn btn-danger btn-sm"
+                                                    ng-click="doUpdate(med.rid)">Delete</button>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <div class="modal-footer">
+                                    <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Equipment Manager Card -->
+        <div class="col">
+            <div class="card">
+                <img src="pics/medicalequipment_manager.png" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">Equipment Manager</h5>
+                    <p class="card-text">View, update, or remove donated equipment.</p>
+                    <a href="#" class="btn btn-primary" ng-click="showEquipments()" data-bs-toggle="modal"
+                        data-bs-target="#equipmentModal">Open</a>
+                    <!-- Modal -->
+                    <div class="modal fade" id="equipmentModal" tabindex="-1">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Equipments Manager</h5>
+                                    <img src="pics/cross.png" alt="" class="btn-close" data-bs-dismiss="modal">
+                                </div>
+                                <div class="modal-body">
+                                    <div class="row mb-3">
+                                        <div class="col-md-9">
+                                            <input type="email" class="form-control" placeholder="Enter Email ID"
+                                                ng-model="searchEmail">
+                                        </div>
+                                        <div class="col-md-3">
+                                            <button class="btn btn-primary w-100" ng-click="showEquipments()">
+                                                Search
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <table class="table table-bordered">
+                                        <thead class="table-primary">
+                                            <tr>
+                                                <th>Equipment</th>
+                                                <th>Donation/Sale</th>
+                                                <th>Amount</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tr ng-repeat="obj in jsonArray">
+                                            <td>{{obj.equipment}}</td>
+                                            <td>{{obj.atype}}</td>
+                                            <td>{{obj.amount}}</td>
+                                            <td>
+                                                <button class="btn btn-danger btn-sm"
+                                                    ng-click="doUpdateData(obj.rid)">Delete</button>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <div class="modal-footer">
+                                    <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Settings Card -->
+        <div class="col">
+            <div class="card">
+                <img src="pics/settings.png" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">Settings</h5>
+                    <p class="card-text">Manage your account preferences and security.</p>
+                    <a href="#" class="btn btn-primary" ng-click="settings()" data-bs-toggle="modal"
+                        data-bs-target="#settings">Open</a>
+                    <!-- Modal -->
+                    <div class="modal fade" id="settings" tabindex="-1">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Settings</h5>
+                                    <img src="pics/cross.png" alt="" class="btn-close" data-bs-dismiss="modal">
+                                </div>
+                                <div class="modal-body">
+                                    <div class="mb-3">
+                                        <label class="form-label">Email ID</label>
+                                        <input type="email" ng-model="txtEmailSettings" class="form-control"
+                                            placeholder="Enter your email">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Current Password</label>
+                                        <input type="password" class="form-control" ng-model="oldPwd"
+                                            placeholder="Enter current password">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">New Password</label>
+                                        <input type="password" class="form-control" ng-model="newPwd"
+                                            placeholder="Enter new password">
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-light border" data-bs-dismiss="modal">
+                                        Cancel
+                                    </button>
+
+                                    <button type="button" class="btn btn-secondary" ng-click="updatePassword()">
+                                        Update Password
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

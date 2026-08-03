@@ -1,0 +1,56 @@
+body {
+    background: linear-gradient(135deg, #eef2ff, #d9e8ff);
+}
+
+.profileForm {
+    width: 75%;
+    max-width: 1100px;
+    margin: 40px auto;
+    background: white;
+    padding: 45px;
+    border-radius: 20px;
+    margin-bottom: 20px;
+    transition: all .3s ease;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, .08);
+}
+
+.profileForm:hover {
+    transform: translateY(-4px)
+}
+.form-control {
+    border-radius: 12px;
+}
+
+.profile-btn {
+    width: 180px;
+    height: 45px;
+    border-radius: 10px;
+    margin-top: 20px;
+}
+
+h2 {
+    font-weight: 700;
+    margin-bottom: 35px;
+}
+
+label {
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.preview-img {
+    width: 220px;
+    height: 140px;
+    object-fit: cover;
+    border: 2px dashed #ccc;
+    margin-top: 10px;
+    background: #f8f9fa;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, .08);
+    
+}
+
+.upload-box{
+    border:1px solid #e5e5e5;
+    border-radius:15px;
+    padding:25px;
+}

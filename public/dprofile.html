@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Profile Page</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="CSS/dprofile.css">
+  <link rel="icon" type="image/png" href="favicon/favicon-96x96.png" sizes="96x96">
+  <link rel="icon" type="image/svg+xml" href="favicon/favicon.svg">
+  <link rel="shortcut icon" href="favicon/favicon.ico">
+  <link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-touch-icon.png">
+  <link rel="manifest" href="favicon/site.webmanifest">
+</head>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script>
+  function doShowPrev(fileCtrl, imgId) {
+    const file = fileCtrl.files[0];
+    if (file) {
+      document.getElementById(imgId).src = URL.createObjectURL(file);
+    }
+  }
+  $(document).ready(function () {
+    $("#btnGetDetails").click(function () {
+      let obj = {
+        type: "post",
+        url: "/getDetails",
+        data: {
+          txtEmail: $("#txtEmail").val()
+        }
+      }
+      $.ajax(obj).then(function (jsonAry) {
+        $("#txtName").val(jsonAry[0].name);
+        $("#txtMobile").val(jsonAry[0].mobile);
+        $("#txtAddress").val(jsonAry[0].address);
+        $("#txtCity").val(jsonAry[0].city);
+
+        // Image previews
+        $("#prevaadhar").prop("src", jsonAry[0].acardpath);
+        $("#prevprofile").prop("src", jsonAry[0].picpath);
+        $("#hdn1").val(jsonAry[0].acardpath);
+        $("#hdn2").val(jsonAry[0].picpath);
+      })
+    })
+  })
+</script>
+<script>
+  function setEmail() {
+    document.getElementById("txtEmail").value = localStorage.getItem("activeUser");
+    document.getElementById("txtEmail").readOnly = true;
+  }
+</script>
+
+<body onload="setEmail()">
+  <div class="profileForm">
+    <form class="row g-3" action="/dprofile" method="post" enctype="multipart/form-data">
+      <div class="text-center mb-4">
+        <h2>Donor Profile</h2>
+      </div>
+
+      <!-- Information -->
+      <label>Email ID</label>
+      <div class="input-group mb-3" style="margin-top: -0.8px;">
+        <input type="text" class="form-control" id="txtEmail" name="txtEmail" placeholder="Enter Email ID">
+        <button class="btn btn-primary" type="button" id="btnGetDetails">Get Details</button>
+      </div>
+      <div class="col-md-6">
+        <label>Name</label>
+        <input type="text" class="form-control" id="txtName" name="txtName" placeholder="Enter Name">
+      </div>
+      <div class="col-md-6">
+        <label>Mobile Number</label>
+        <input type="text" class="form-control" id="txtMobile" name="txtMobile" placeholder="Enter Mobile Number">
+      </div>
+      <div class="col-8">
+        <label>Address</label>
+        <input type="text" class="form-control" id="txtAddress" name="txtAddress" placeholder="Enter Address">
+      </div>
+      <div class="col-md-4">
+        <label>City</label>
+        <input type="text" class="form-control" id="txtCity" name="txtCity" placeholder="Enter City">
+      </div>
+
+      <!-- aadhar card upload -->
+      <div class="col-md-6 text-center">
+        <div class="upload-box text-center">
+          <label class="d-block mb-2">Aadhar Card</label>
+          <img id="prevaadhar" src="./pics/upload_image.png" class="preview-img">
+          <input type="hidden" id="hdn1" name="hdn1">
+          <input type="file" hidden class="form-control" id="aadhar" name="aadhar"
+            onchange="doShowPrev(this,'prevaadhar')">
+          <br>
+          <label for="aadhar" class="btn btn-outline-primary mt-3">Upload Aadhar Card</label>
+        </div>
+      </div>
+
+      <!-- profile picture upload -->
+      <div class="col-md-6 text-center">
+        <div class="upload-box text-center">
+          <label class="d-block mb-2">Profile Picture</label>
+          <img id="prevprofile" src="./pics/upload_image.png" class="preview-img">
+          <input type="hidden" id="hdn2" name="hdn2">
+          <input type="file" class="form-control" id="profile" name="profile" hidden
+            onchange="doShowPrev(this,'prevprofile')">
+          <br>
+          <label for="profile" class="btn btn-outline-primary mt-3">Upload Profile Picture</label>
+        </div>
+      </div>
+
+      <!-- buttons -->
+      <div class="text-center mb-4">
+        <button type="submit" class="btn btn-primary profile-btn">Save Profile</button>
+        <button type="submit" class="btn btn-primary profile-btn" formaction="/update_profile">Update Profile</button>
+      </div>
+    </form>
+  </div>
+</body>
+
+</html>

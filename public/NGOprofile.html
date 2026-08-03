@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Profile Page</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="CSS/ngoprofile.css">
+    <link rel="icon" type="image/png" href="favicon/favicon-96x96.png" sizes="96x96">
+    <link rel="icon" type="image/svg+xml" href="favicon/favicon.svg">
+    <link rel="shortcut icon" href="favicon/favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-touch-icon.png">
+    <link rel="manifest" href="favicon/site.webmanifest">
+</head>
+<script>
+    function doShowPrev(fileCtrl, imgId) {
+        const file = fileCtrl.files[0];
+        if (file) {
+            document.getElementById(imgId).src = URL.createObjectURL(file);
+        }
+    }
+</script>
+<script>
+    function setEmail() {
+        document.getElementById("txtEmail").value = localStorage.getItem("activeUser");
+        document.getElementById("txtEmail").readOnly = true;
+    }
+</script>
+
+<body onload="setEmail()">
+    <div class="profileForm">
+        <form class="row" action="/ngo_profile" method="post" enctype="multipart/form-data">
+            <div class="col-12 text-center mb-5">
+                <h2>NGO Profile</h2>
+            </div>
+
+            <!-- Image  -->
+            <div class="col-md-4 text-center">
+                <div class="upload-box text-center">
+                    <input type="file" id="proofpic" name="proofpic" hidden onchange="doShowPrev(this,'proof')">
+                    <img id="proof" src="./pics/upload_image.png" class="proof">
+                    <label for="proofpic" class="btn btn-outline-primary mt-3">Upload Registration Certificate </label>
+                </div>
+            </div>
+
+            <!-- Information -->
+            <div class="col-md-8 row g-3">
+                <div class="col-12">
+                    <label>Email ID</label>
+                    <input type="email" class="form-control" name="txtEmail" id="txtEmail" placeholder="Enter Email ID">
+                </div>
+                <div class="col-md-6">
+                    <label>NGO Name</label>
+                    <input type="text" class="form-control" name="txtNGO" id="txtNGO"
+                        placeholder="Enter Registered NGO Name">
+                </div>
+                <div class="col-md-6">
+                    <label>Registered Office Address</label>
+                    <input type="text" class="form-control" name="txtAddress" id="txtAddress"
+                        placeholder="Enter Address">
+                </div>
+                <div class="col-md-6">
+                    <label>City</label>
+                    <input type="text" class="form-control" name="txtCity" id="txtCity" placeholder="Enter City">
+                </div>
+                <div class="col-md-6">
+                    <label>Website URL</label>
+                    <input type="url" class="form-control" name="txtWeb" id="txtWeb"
+                        placeholder="https://www.example.org">
+                </div>
+                <div class="col-md-6">
+                    <label>Mobile Number</label>
+                    <input type="tel" class="form-control" id="txtMobile" name="txtMobile"
+                        placeholder="Enter Mobile Number">
+                </div>
+                <div class="col-md-6">
+                    <label>Established On</label>
+                    <input type="date" class="form-control" name="txtDate" id="txtDate" placeholder="Enter">
+                </div>
+                <div class="col-md-6">
+                    <label>President/Chairperson Name</label>
+                    <input type="text" class="form-control" name="txtName" id="txtName"
+                        placeholder="Enter Chair Person Name">
+                </div>
+                <div class="col-md-6">
+                    <label>NGO Profile/ Work</label>
+                    <textarea class="form-control" rows="3" name="txtInfo" id="txtInfo"
+                        placeholder="NGO Description"></textarea>
+                </div>
+                <div class="col-md-6">
+                    <label>NGO Registration Number</label>
+                    <input type="text" class="form-control" name="txtNumber" id="txtNumber"
+                        placeholder="Enter Registration Number">
+                </div>
+                <div class="col-12 text-center">
+                    <button class="btn btn-primary profile-btn">Complete Registration</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="CSS/medFinder.css">
+    <link rel="icon" type="image/png" href="favicon/favicon-96x96.png" sizes="96x96">
+    <link rel="icon" type="image/svg+xml" href="favicon/favicon.svg">
+    <link rel="shortcut icon" href="favicon/favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-touch-icon.png">
+    <link rel="manifest" href="favicon/site.webmanifest">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.8.3/angular.min.js"></script>
+    <script>
+        var myModule = angular.module("Module", []);
+        let myController = myModule.controller("Controller", function ($scope, $http) {
+            $scope.doFetchAllCities = function () {
+                let url = "/fetch_distinct_cities_ngo";
+                $http.get(url).then(function (resp) {
+                    $scope.jsonArrayCities = resp.data;
+                }, function (err) {
+                    alert(err);
+                });
+            }
+            //----------------------------------------
+            $scope.resultArray = [];
+            $scope.doShowDetails = function () {
+                let url = "/fetch_ngo_details?city=" + $scope.selCity;
+                $http.get(url).then(function (response) {
+                    $scope.resultArray = response.data;
+                }, function (err) {
+                    alert(err.data);
+                });
+            }
+            $scope.showDonor = function (obj) {
+                $scope.selectedDonor = obj;
+            }
+        })
+    </script>
+</head>
+
+<body ng-app="Module" ng-controller="Controller" ng-init="doFetchAllCities();">
+    <nav class=" navbar bg-primary" data-bs-theme="light">
+        <div class="container-fluid">
+            <div class="ms-auto"><a class="btn btn-outline-danger logout-btn" href="/"><i
+                        class="bi bi-box-arrow-right"></i> Logout</a></div>
+        </div>
+    </nav>
+    <div class="text-center mb-4">
+        <h2 class="fw-bold text-primary" style="margin-top: 40px;">
+            <i class="bi bi-buildings"></i>
+            Find NGOs Near You
+        </h2>
+        <p class="text-muted">
+            Search NGOs available in your city.
+        </p>
+    </div>
+    <div class="profileForm ">
+        <div class="row align-items-end g-3 mb-5">
+            <div class="col-lg-3">
+                <label class="form-label fw-semibold">City</label>
+                <input class="form-control" list="city_list" ng-model="selCity" placeholder="Select City">
+                <datalist id="city_list">
+                    <option ng-repeat="obj in jsonArrayCities" value="{{obj.city}}"></option>
+                </datalist>
+            </div>
+            <div class="col-md-2">
+                <button class="btn btn-primary w-100" ng-click="doShowDetails()">Search
+                </button>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4 mb-4" ng-repeat="obj in resultArray">
+                <div class="card shadow h-100">
+
+                    <img ng-src="{{obj.picurl}}" class="img-fluid rounded shadow" style="width: 350px; height: 350px;">
+                    <div class="card-body">
+                        <h4 class="text-primary">{{obj.name}}</h4>
+                        <hr>
+                        <p><b>City :</b> {{obj.city}}</p>
+                        <p><b>Address :</b> {{obj.address}}</p>
+                        <p><b>Contact Number:</b> {{obj.mobile}}</p>
+                        <button class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#NGOModal"
+                            ng-click="showDonor(obj)">Contact NGO
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="NGOModal">
+        <div class="modal-dialog ">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <i class="bi bi-person-circle"></i>
+                        NGO Details
+                    </h5>
+                    <button class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="text-center">
+                        <p class="name"><b>{{selectedDonor.name}}</b></p>
+                    </div>
+                    <p><b>Email :</b> {{selectedDonor.email}}</p>
+                    <p><b>City :</b> {{selectedDonor.city}}</p>
+                    <p><b>Address :</b> {{selectedDonor.address}}</p>
+                    <p><b>Established :</b> {{selectedDonor.established | date:'dd/MM/yyyy'}}</p>
+                    <p><b>Registration Number :</b> {{selectedDonor.regnumber}}</p>
+                    <p><b>Description :</b> {{selectedDonor.info}}</p>
+                    <a class="btn btn-outline-primary btn-sm" href="{{selectedDonor.website}}" target="_blank">Visit
+                        Website</a>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

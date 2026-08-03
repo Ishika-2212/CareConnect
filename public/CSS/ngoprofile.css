@@ -1,0 +1,62 @@
+body {
+    background: linear-gradient(135deg, #eef2ff, #d9e8ff);
+}
+
+.profileForm {
+     width:85%;
+    margin: 40px auto;
+    background: white;
+    padding:45px;
+    border-radius: 20px;
+    margin-bottom: 20px;
+    transition: all .3s ease;
+    box-shadow:0 15px 40px rgba(0,0,0,.08);
+}
+.profileForm .row{
+    align-items:flex-start;
+    align-items: center;
+
+}
+.proof {
+    width:100%;
+    max-width:250px;
+    height:250px;
+    object-fit:cover;
+    border-radius:10px;
+    border:2px dashed #ccc;
+    background:#f8f9fa;
+}
+.form-control {
+    border-radius: 12px;
+    height:48px;
+}
+h2{
+    font-size:42px;
+    font-weight:700;
+    color:#2563eb;
+}
+label{
+    font-weight:600;
+    margin-bottom:5px;
+    font-size:15px;
+}
+.profile-btn{
+     width:260px;
+    height:55px;
+    font-size:20px;
+    border-radius:14px;
+    box-shadow:0 8px 18px rgba(37,99,235,.25);
+}
+.upload-box{
+    width:300px;
+    margin:auto;
+    border:1px solid #e5e5e5;
+    border-radius:15px;
+    padding:25px;
+    height:100%;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+}
+

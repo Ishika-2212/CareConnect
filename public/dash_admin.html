@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="CSS/dash_admin.css">
+    <link rel="icon" type="image/png" href="favicon/favicon-96x96.png" sizes="96x96">
+    <link rel="icon" type="image/svg+xml" href="favicon/favicon.svg">
+    <link rel="shortcut icon" href="favicon/favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-touch-icon.png">
+    <link rel="manifest" href="favicon/site.webmanifest">
+    <link rel="icon" type="image/png" href="favicon/favicon-96x96.png" sizes="96x96">
+    <link rel="icon" type="image/svg+xml" href="favicon/favicon.svg">
+    <link rel="shortcut icon" href="favicon/favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-touch-icon.png">
+    <link rel="manifest" href="favicon/site.webmanifest">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.8.3/angular.min.js"></script>
+    <script>
+        let myModule = angular.module("Module", []);
+        let myController = myModule.controller("Controller", function ($scope, $http) {
+            $scope.doShowDetails = function () {
+                let url = "/fetch_medicine_admin";
+                $http.get(url).then(function (resp) {
+                    $scope.jsonArray = resp.data;
+                }, function (err) {
+                    alert(err);
+                });
+            }
+            $scope.doShowDetailsEquip = function () {
+                let url = "/fetch_equip_admin";
+                $http.get(url).then(function (resp) {
+                    $scope.jsonArray = resp.data;
+                }, function (err) {
+                    alert(err);
+                });
+            }
+        })
+    </script>
+</head>
+
+<body ng-app="Module" ng-controller="Controller">
+    <!-- nav bar -->
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid">
+            <a class="navbar-brand d-flex align-items-center" href="#">
+                <img src="pics/logo.avif" class="logo" alt="Logo">
+                <span class="site-name">CareConnect</span>
+            </a>
+            <div class="ms-auto"><a class="btn logout-btn" href="/"><i class="bi bi-box-arrow-right"></i> Logout</a>
+            </div>
+        </div>
+    </nav>
+    <div class="row row-cols-1 row-cols-md-3 g-3">
+        <!-- User Dash -->
+        <div class="col">
+            <div class="card">
+                <img src="pics/user.jpeg" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">User Management</h5>
+                    <p class="card-text">Manage all registered user accounts.</p>
+                    <a href="/admin_user_dashboard" class="btn btn-primary">Open</a>
+                </div>
+            </div>
+        </div>
+        <!-- Donor Dash -->
+        <div class="col">
+            <div class="card">
+                <img src="pics/donor icon.png" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">Donor Management</h5>
+                    <p class="card-text">View and manage donor profiles.</p>
+                    <a href="/admin_donor_dashboard" class="btn btn-primary">Open</a>
+                </div>
+            </div>
+        </div>
+        <!-- Needy Dash -->
+        <div class="col">
+            <div class="card">
+                <img src="pics/profilepic.png" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">Needy Management</h5>
+                    <p class="card-text">View and manage needy user profiles.</p>
+                    <a href="/admin_needy_dashboard" class="btn btn-primary">Open</a>
+                </div>
+            </div>
+        </div>
+        <!-- ngo dash -->
+        <div class="col">
+            <div class="card">
+                <img src="pics/ngo icon.png" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">NGO Management</h5>
+                    <p class="card-text">View and manage NGO profiles.</p>
+                    <a href="/admin_ngo_dashboard" class="btn btn-primary">Open</a>
+                </div>
+            </div>
+        </div>
+        <!-- Medicine Dash -->
+        <div class="col">
+            <div class="card card-cards">
+                <img src="pics/Medicine_manager.png" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">Medicine Management</h5>
+                    <p class="card-text">Manage donated medicines and their availability.</p>
+                    <a href="#" class="btn btn-primary" ng-click="doShowDetails()" data-bs-toggle="modal"
+                        data-bs-target="#medicineModal">Open</a>
+
+                </div>
+            </div>
+        </div>
+        <!-- Equipment Dash -->
+        <div class="col">
+            <div class="card card-cards">
+                <img src="pics/medical_equipment.png" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">Equipment Management</h5>
+                    <p class="card-text">Manage donated medical equipment.</p>
+                    <a href="#" class="btn btn-primary" ng-click="doShowDetailsEquip()" data-bs-toggle="modal"
+                        data-bs-target="#EquipModal">Open</a>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+
+    <!--medicine modal -->
+    <div class="modal fade" id="medicineModal" tabindex="-1">
+        <div class="modal-dialog modal-xl modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Medicine Manager</h5>
+                    <img src="pics/cross.png" alt="" class="btn-close" data-bs-dismiss="modal">
+                </div>
+                <div class="modal-body">
+                    <div class="row g-3">
+                        <div class="col-md-4" ng-repeat="obj in jsonArray">
+                            <div class="card h-100 shadow">
+                                <img src="{{obj.picurl}}" class="card-img-top-card" height="180">
+                                <div class="card-body-card">
+                                    <h5>{{obj.medname}}</h5>
+                                    <p><b>Company:</b> {{obj.company}}</p>
+                                    <p><b>Expiry:</b> {{obj.expdate | date:'dd/MM/yyyy'}}</p>
+                                    <p><b>Quantity:</b> {{obj.qty}}</p>
+                                    <p><b>Packing:</b> {{obj.packing}}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--equip modal -->
+    <div class="modal fade" id="EquipModal" tabindex="-1">
+        <div class="modal-dialog modal-xl modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Equipment Manager</h5>
+                    <img src="pics/cross.png" alt="" class="btn-close" data-bs-dismiss="modal">
+                </div>
+                <div class="modal-body">
+                    <div class="row g-3">
+                        <div class="col-md-4" ng-repeat="obj in jsonArray">
+                            <div class="card h-100 shadow">
+                                <img src="{{obj.pic1path}}" class="card-img-top-card" height="180">
+                                <div class="card-body-card">
+                                    <h5>{{obj.equipment}}</h5>
+                                    <p><b>Donation/Sale</b> {{obj.atype}}</p>
+                                    <p><b>Amount</b> {{obj.amount}}</p>
+                                    <p><b>Condition:</b> {{obj.conditions}}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
