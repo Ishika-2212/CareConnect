@@ -426,3 +426,20 @@ section{
     font-weight:700;
     border-bottom:3px solid #0d6efd;
 }
+
+
+@media (max-width: 991px) {
+    .navbar-nav {
+        text-align: center;
+        margin-top: 15px;
+    }
+
+    .d-flex {
+        margin-top: 15px;
+    }
+
+    .signup-btn,
+    .login-btn {
+        width: 100%;
+    }
+}
