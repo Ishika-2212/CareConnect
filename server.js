@@ -25,11 +25,21 @@ mysqlCon.connect(function (err) {
 })
 //--------------------------------------------//
 var nodemailer = require("nodemailer");
-var transporter = nodemailer.createTransport({
-    service: "gmail",
+const transporter = nodemailer.createTransport({
+    host: "smtp.gmail.com",
+    port: 587,
+    secure: false,
     auth: {
-        user: "ishika.dev654@gmail.com",
-        pass: "wtsu rxfh uhyb krbv"
+        user: process.env.EMAIL,
+        pass: process.env.EMAIL_PASS
+    }
+});
+
+transporter.verify((err, success) => {
+    if (err) {
+        console.log("SMTP Error:", err);
+    } else {
+        console.log("SMTP Server Ready");
     }
 });
 //-----------------------------------------------------------------//
@@ -41,34 +51,38 @@ app.get("/", function (req, resp) {
 //-------------------------------------------------------------//
 app.post("/signup", function (req, resp) {
     let email = req.body.txtEmail;
-    let Password = req.body.txtPwd;
+    let password = req.body.txtPwd;
     let usertype = req.body.utype;
-    // resp.send("Welcome-->" + email + "<br>Password  " + Password + "<br>User Type-->" + usertype);
-    mysqlCon.query("insert into users values(?,?,?,curdate(),1)", [email, Password, usertype], function (err) {
-        if (err == null) {
+    mysqlCon.query(
+        "INSERT INTO users VALUES(?,?,?,CURDATE(),1)",
+        [email, password, usertype],
+        function (err) {
+            if (err) {
+                console.log(err);
+                return resp.send(err.message);
+            }
             let mailOptions = {
-                from: "ishika.dev654@gmail.com",
+                from: process.env.EMAIL,
                 to: email,
-                subject: "Welcome to Our Website",
-                html: `<h2>Hello ${email}</h2>
-                <p>Your account has been created successfully.</p><br>
-                <b>Thank you for registering.</b>`
+                subject: "Welcome to CareConnect",
+                html: `
+                    <h2>Hello ${email}</h2>
+                    <p>Your account has been created successfully.</p>
+                    <br>
+                    <b>Thank you for registering with CareConnect.</b>
+                `
             };
             transporter.sendMail(mailOptions, function (err, info) {
                 if (err) {
-                    console.log(err);
+                    console.log("Mail Error:", err);
+                    return resp.send("User Registered but Email Not Sent");
                 }
-                else {
-                    console.log("Mail Sent");
-                }
+                console.log("Mail Sent:", info.response);
+                resp.send("success");
             });
-            resp.send("success");
         }
-        else
-            resp.send(err.message);
-    })
-
-})
+    );
+});
 app.post("/login", function (req, res) {
     let email = req.body.txtEmail;
     let pwd = req.body.txtPwd;
@@ -437,8 +451,8 @@ app.get("/deletedata", function (req, resp) {
         });
 });
 app.get("/fetch_medicine", function (req, resp) {
-     let email = req.query.txtEmail;
-     mysqlCon.query(
+    let email = req.query.txtEmail;
+    mysqlCon.query(
         "SELECT * FROM medicines WHERE email=?",
         [email],
         function (err, result) {
