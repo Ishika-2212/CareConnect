@@ -106,45 +106,31 @@
 <body ng-app="Module" ng-controller="Controller">
     <!-- nav bar -->
     <nav class="navbar navbar-expand-lg custom-navbar">
-    <div class="container-fluid">
+        <div class="container-fluid">
 
-        <!-- Logo -->
-        <a class="navbar-brand d-flex align-items-center" href="#">
-            <img src="pics/logo.avif" class="logo" alt="Logo">
-            <span class="site-name">CareConnect</span>
-        </a>
-        <!-- Right Side Buttons -->
-        <div class="ms-auto d-flex align-items-center gap-3">
-            <a class="btn nav-btn profile-btn" href="/donor_page">
-                <i class="bi bi-person-circle"></i> Profile
+            <!-- Logo -->
+            <a class="navbar-brand d-flex align-items-center" href="#">
+                <img src="pics/logo.avif" class="logo" alt="Logo">
+                <span class="site-name">CareConnect</span>
             </a>
-            <a href="#"
-               class="btn nav-btn settings-btn"
-               ng-click="settings()"
-               data-bs-toggle="modal"
-               data-bs-target="#settings">
-                <i class="bi bi-gear-fill"></i> Settings
-            </a>
-            <a class="btn nav-btn logout-btn" href="/">
-                <i class="bi bi-box-arrow-right"></i> Logout
-            </a>
+            <!-- Right Side Buttons -->
+            <div class="ms-auto d-flex align-items-center gap-3">
+                <a class="btn nav-btn profile-btn" href="/donor_page">
+                    <i class="bi bi-person-circle"></i> Profile
+                </a>
+                <a href="#" class="btn nav-btn settings-btn" ng-click="settings()" data-bs-toggle="modal"
+                    data-bs-target="#settings">
+                    <i class="bi bi-gear-fill"></i> Settings
+                </a>
+                <a class="btn nav-btn logout-btn" href="/">
+                    <i class="bi bi-box-arrow-right"></i> Logout
+                </a>
+
+            </div>
 
         </div>
-
-    </div>
-</nav>
+    </nav>
     <div class="row row-cols-1 row-cols-md-3 g-3">
-        <!-- Profile Card -->
-        <!-- <div class="col">
-            <div class="card">
-                <img src="pics/profilepic.png" class="card-img-top" alt="...">
-                <div class="card-body">
-                    <h5 class="card-title">Profile</h5>
-                    <p class="card-text">Manage your personal profile and contact details.</p>
-                    <a href="/donor_page" class="btn btn-primary">Donor Profile</a>
-                </div>
-            </div>
-        </div> -->
         <!-- Avail Medicine Card -->
         <div class="col">
             <div class="card">
@@ -167,213 +153,146 @@
                 </div>
             </div>
         </div>
-       <div class="col">
-    <div class="card">
-        <img src="pics/inventory.png" class="card-img-top" alt="">
-
-        <div class="card-body">
-            <h5 class="card-title">Inventory Manager</h5>
-
-            <p class="card-text">
-                View, update or remove donated medicines and equipments.
-            </p>
-
-            <a href="#"
-               class="btn btn-primary"
-               data-bs-toggle="modal"
-               data-bs-target="#inventoryModal">
-               Open
-            </a>
-        </div>
-    </div>
-</div>
-<div class="modal fade" id="inventoryModal" tabindex="-1">
-    <div class="modal-dialog modal-xl">
-
-        <div class="modal-content">
-
-            <div class="modal-header">
-                <h4 class="modal-title">Inventory Manager</h4>
-
-                <button class="btn-close"
-                        data-bs-dismiss="modal"></button>
-            </div>
-
-            <div class="modal-body">
-
-                <!-- Tabs -->
-                <ul class="nav nav-tabs mb-3">
-
-                    <li class="nav-item">
-                        <button class="nav-link active"
-                                data-bs-toggle="tab"
-                                data-bs-target="#medicineTab"
-                                ng-click="showMedicines()">
-                            Medicines
-                        </button>
-                    </li>
-
-                    <li class="nav-item">
-                        <button class="nav-link"
-                                data-bs-toggle="tab"
-                                data-bs-target="#equipmentTab"
-                                ng-click="showEquipments()">
-                            Equipments
-                        </button>
-                    </li>
-
-                </ul>
-
-                <div class="tab-content">
-
-                    <!-- Medicine Tab -->
-
-                    <div class="tab-pane fade show active"
-                         id="medicineTab">
-
-                        <table class="table table-bordered">
-
-                            <thead class="table-primary">
-
-                            <tr>
-                                <th>Medicine</th>
-                                <th>Expiry</th>
-                                <th>Qty</th>
-                                <th>Packing</th>
-                                <th>Action</th>
-                            </tr>
-
-                            </thead>
-
-                            <tr ng-repeat="med in jsonArray">
-
-                                <td>{{med.medname}}</td>
-                                <td>{{med.expdate | date:'dd/MM/yyyy'}}</td>
-                                <td>{{med.qty}}</td>
-                                <td>{{med.packing}}</td>
-
-                                <td>
-
-                                    <button
-                                    class="btn btn-danger btn-sm"
-                                    ng-click="deleteMedicine(med.rid)">
-                                    Delete
-                                    </button>
-
-                                </td>
-
-                            </tr>
-
-                        </table>
-
-                    </div>
-
-                    <!-- Equipment Tab -->
-
-                    <div class="tab-pane fade"
-                         id="equipmentTab">
-
-                        <table class="table table-bordered">
-
-                            <thead class="table-success">
-
-                            <tr>
-                                <th>Equipment</th>
-                                <th>Type</th>
-                                <th>Amount</th>
-                                <th>Action</th>
-                            </tr>
-
-                            </thead>
-
-                            <tr ng-repeat="obj in equipmentArray">
-
-                                <td>{{obj.equipment}}</td>
-                                <td>{{obj.atype}}</td>
-                                <td>{{obj.amount}}</td>
-
-                                <td>
-
-                                    <button
-                                    class="btn btn-danger btn-sm"
-                                    ng-click="deleteEquipment(obj.rid)">
-                                    Delete
-                                    </button>
-
-                                </td>
-
-                            </tr>
-
-                        </table>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-            <div class="modal-footer">
-
-                <button class="btn btn-secondary"
-                        data-bs-dismiss="modal">
-                    Close
-                </button>
-
-            </div>
-
-        </div>
-
-    </div>
-</div>
-        <!-- Settings Card -->
-        <!-- <div class="col">
+        <div class="col">
             <div class="card">
-                <img src="pics/settings.png" class="card-img-top" alt="...">
-                <div class="card-body">
-                    <h5 class="card-title">Settings</h5>
-                    <p class="card-text">Manage your account preferences and security.</p>
-                    <a href="#" class="btn btn-primary" ng-click="settings()" data-bs-toggle="modal"
-                        data-bs-target="#settings">Open</a> -->
-                    <!-- Modal -->
-                    <div class="modal fade" id="settings" tabindex="-1">
-                        <div class="modal-dialog modal-lg">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title">Settings</h5>
-                                    <img src="pics/cross.png" alt="" class="btn-close" data-bs-dismiss="modal">
-                                </div>
-                                <div class="modal-body">
-                                    <div class="mb-3">
-                                        <label class="form-label">Email ID</label>
-                                        <input type="email" ng-model="txtEmailSettings" class="form-control"
-                                            placeholder="Enter your email">
-                                    </div>
-                                    <div class="mb-3">
-                                        <label class="form-label">Current Password</label>
-                                        <input type="password" class="form-control" ng-model="oldPwd"
-                                            placeholder="Enter current password">
-                                    </div>
-                                    <div class="mb-3">
-                                        <label class="form-label">New Password</label>
-                                        <input type="password" class="form-control" ng-model="newPwd"
-                                            placeholder="Enter new password">
-                                    </div>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-light border" data-bs-dismiss="modal">
-                                        Cancel
-                                    </button>
+                <img src="pics/inventory.png" class="card-img-top" alt="">
 
-                                    <button type="button" class="btn btn-secondary" ng-click="updatePassword()">
-                                        Update Password
-                                    </button>
-                                </div>
+                <div class="card-body">
+                    <h5 class="card-title">Inventory Manager</h5>
+
+                    <p class="card-text">
+                        View, update or remove donated medicines and equipments.
+                    </p>
+
+                    <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#inventoryModal">
+                        Open
+                    </a>
+                </div>
+            </div>
+        </div>
+        <!-- Modal for Inventory Manager -->
+        <div class="modal fade" id="inventoryModal" tabindex="-1">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Inventory Manager</h4>
+                        <button class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- Tabs -->
+                        <ul class="nav nav-tabs mb-3">
+                            <li class="nav-item">
+                                <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#medicineTab"
+                                    ng-click="showMedicines()">
+                                    Medicines
+                                </button>
+                            </li>
+                            <li class="nav-item">
+                                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#equipmentTab"
+                                    ng-click="showEquipments()">
+                                    Equipments
+                                </button>
+                            </li>
+                        </ul>
+                        <div class="tab-content">
+                            <!-- Medicine Tab -->
+                            <div class="tab-pane fade show active" id="medicineTab">
+                                <table class="table table-bordered">
+                                    <thead class="table-primary">
+                                        <tr>
+                                            <th>Medicine</th>
+                                            <th>Expiry</th>
+                                            <th>Qty</th>
+                                            <th>Packing</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tr ng-repeat="med in jsonArray">
+                                        <td>{{med.medname}}</td>
+                                        <td>{{med.expdate | date:'dd/MM/yyyy'}}</td>
+                                        <td>{{med.qty}}</td>
+                                        <td>{{med.packing}}</td>
+                                        <td>
+                                            <button class="btn btn-danger btn-sm" ng-click="deleteMedicine(med.rid)">
+                                                Delete
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <!-- Equipment Tab -->
+                            <div class="tab-pane fade" id="equipmentTab">
+                                <table class="table table-bordered">
+                                    <thead class="table-success">
+                                        <tr>
+                                            <th>Equipment</th>
+                                            <th>Type</th>
+                                            <th>Amount</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tr ng-repeat="obj in equipmentArray">
+                                        <td>{{obj.equipment}}</td>
+                                        <td>{{obj.atype}}</td>
+                                        <td>{{obj.amount}}</td>
+                                        <td>
+                                            <button class="btn btn-danger btn-sm" ng-click="deleteEquipment(obj.rid)">
+                                                Delete
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </table>
                             </div>
                         </div>
                     </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" data-bs-dismiss="modal">
+                            Close
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
+        <!-- Modal for settings -->
+        <div class="modal fade" id="settings" tabindex="-1">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Settings</h5>
+                        <img src="pics/cross.png" alt="" class="btn-close" data-bs-dismiss="modal">
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label class="form-label">Email ID</label>
+                            <input type="email" ng-model="txtEmailSettings" class="form-control"
+                                placeholder="Enter your email">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Current Password</label>
+                            <input type="password" class="form-control" ng-model="oldPwd"
+                                placeholder="Enter current password">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">New Password</label>
+                            <input type="password" class="form-control" ng-model="newPwd"
+                                placeholder="Enter new password">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-light border" data-bs-dismiss="modal">
+                            Cancel
+                        </button>
+
+                        <button type="button" class="btn btn-secondary" ng-click="updatePassword()">
+                            Update Password
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    </div>
     </div>
 </body>
 
