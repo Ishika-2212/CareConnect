@@ -184,25 +184,33 @@
           }
         }).done(function (response) {
           if (response.status) {
-            $("#otpMsg")
-              .html("<span class='text-success'><i class='bi bi-check-circle-fill'></i> Email Verified Successfully</span>");
+            $("#otpMsg").html(
+              "<span class='text-success'><i class='bi bi-check-circle-fill'></i> Email Verified Successfully</span>"
+            );
             $("#btnSignup").prop("disabled", false);
             $("#btnVerifyOTP").prop("disabled", true);
             $("#btnSendOTP").prop("disabled", true);
           }
           else {
-
-            $("#otpMsg")
-              .html("<span class='text-danger'><i class='bi bi-x-circle-fill'></i> " + response.message + "</span>");
+            $("#otpMsg").html(
+              "<span class='text-danger'><i class='bi bi-x-circle-fill'></i> " +
+              response.message +
+              "</span>"
+            );
 
           }
-          if (response.status == true) {
-            $("#btnSignup").prop("disabled", false);
-            $("#btnVerifyOTP").prop("disabled", true);
-            $("#btnSendOTP").prop("disabled", true);
-          }
+
         });
       });
+      // Reset OTP and buttons when email input changes
+      $("#txtEmail").on("input", function () {
+        $("#btnSignup").prop("disabled", true);
+        $("#btnVerifyOTP").prop("disabled", false);
+        $("#btnSendOTP").prop("disabled", false);
+        $("#txtOTP").val("");
+        $("#otpMsg").html("");
+      });
+      //------------------------------------------------
     });
   </script>
 </head>
