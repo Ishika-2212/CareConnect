@@ -444,3 +444,26 @@ section{
         width: 100%;
     }
 }
+
+
+
+#btnSendOTP{
+    min-width:140px;
+    font-weight:600;
+}
+
+#btnVerifyOTP{
+    min-width:120px;
+    font-weight:600;
+}
+
+#txtOTP{
+    letter-spacing:3px;
+    font-size:18px;
+    font-weight:600;
+}
+
+#otpMsg{
+    font-weight:600;
+    margin-top:8px;
+}
