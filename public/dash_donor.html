@@ -105,19 +105,40 @@
 
 <body ng-app="Module" ng-controller="Controller">
     <!-- nav bar -->
-    <nav class="navbar navbar-expand-lg bg-body-tertiary">
-        <div class="container-fluid">
-            <a class="navbar-brand d-flex align-items-center" href="#">
-                <img src="pics/logo.avif" class="logo" alt="Logo">
-                <span class="site-name">CareConnect</span>
+    <nav class="navbar navbar-expand-lg custom-navbar">
+    <div class="container-fluid">
+
+        <!-- Logo -->
+        <a class="navbar-brand d-flex align-items-center" href="#">
+            <img src="pics/logo.avif" class="logo" alt="Logo">
+            <span class="site-name">CareConnect</span>
+        </a>
+        <!-- Right Side Buttons -->
+        <div class="ms-auto d-flex align-items-center gap-3">
+
+            <a class="btn nav-btn logout-btn" href="/">
+                <i class="bi bi-box-arrow-right"></i> Logout
             </a>
-            <div class="ms-auto"><a class="btn btn-outline-danger logout-btn" href="/"><i
-                        class="bi bi-box-arrow-right"></i> Logout</a></div>
+
+            <a class="btn nav-btn profile-btn" href="/donor_page">
+                <i class="bi bi-person-circle"></i> Profile
+            </a>
+
+            <a href="#"
+               class="btn nav-btn settings-btn"
+               ng-click="settings()"
+               data-bs-toggle="modal"
+               data-bs-target="#settings">
+                <i class="bi bi-gear-fill"></i> Settings
+            </a>
+
         </div>
-    </nav>
+
+    </div>
+</nav>
     <div class="row row-cols-1 row-cols-md-3 g-3">
         <!-- Profile Card -->
-        <div class="col">
+        <!-- <div class="col">
             <div class="card">
                 <img src="pics/profilepic.png" class="card-img-top" alt="...">
                 <div class="card-body">
@@ -126,7 +147,7 @@
                     <a href="/donor_page" class="btn btn-primary">Donor Profile</a>
                 </div>
             </div>
-        </div>
+        </div> -->
         <!-- Avail Medicine Card -->
         <div class="col">
             <div class="card">
@@ -269,14 +290,14 @@
             </div>
         </div>
         <!-- Settings Card -->
-        <div class="col">
+        <!-- <div class="col">
             <div class="card">
                 <img src="pics/settings.png" class="card-img-top" alt="...">
                 <div class="card-body">
                     <h5 class="card-title">Settings</h5>
                     <p class="card-text">Manage your account preferences and security.</p>
                     <a href="#" class="btn btn-primary" ng-click="settings()" data-bs-toggle="modal"
-                        data-bs-target="#settings">Open</a>
+                        data-bs-target="#settings">Open</a> -->
                     <!-- Modal -->
                     <div class="modal fade" id="settings" tabindex="-1">
                         <div class="modal-dialog modal-lg">
