@@ -88,3 +88,26 @@ body{
     margin-left:15px;
     letter-spacing:1px;
 }
+
+.profile-btn{
+    background:white;
+    color:#1565C0;
+    border:2px solid white;
+}
+
+.profile-btn:hover{
+    background:#e3f2fd;
+    color:#1565C0;
+}
+
+/* Settings */
+.settings-btn{
+   background:white;
+    color:#1565C0;
+    border:2px solid white;
+}
+
+.settings-btn:hover{
+   background:#e3f2fd;
+    color:#1565C0;
+}
