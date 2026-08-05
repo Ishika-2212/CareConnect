@@ -46,15 +46,16 @@
             }
             // show data of particular email
             $scope.showMedicines = function () {
-                let url = "/getMedicinesData?email=" + $scope.searchEmail;
+                let email = localStorage.getItem("activeUser");
+                let url = "/getMedicinesData?email=" + email;
                 $http.get(url).then(function (resp) {
+                    console.log(resp.data);
                     $scope.jsonArray = resp.data;
-                }, function (err) {
-                    alert(err.data);
                 });
             }
             $scope.showEquipments = function () {
-                let url = "/getEquipmentsData?email=" + $scope.searchEmail;
+                let email = localStorage.getItem("activeUser");
+                let url = "/getEquipmentsData?email=" + email;
                 $http.get(url).then(function (resp) {
                     $scope.jsonArray = resp.data;
                 }, function (err) {
