@@ -26,13 +26,14 @@ mysqlCon.connect(function (err) {
 //--------------------------------------------//
 const nodemailer = require("nodemailer");
 const transporter = nodemailer.createTransport({
-    service: "gmail",
+    host: process.env.SMTP_HOST,
+    port: 587(process.env.SMTP_PORT),
+    secure: false,
     auth: {
-        user: process.env.EMAIL,
-        pass: process.env.EMAIL_PASS
+        user: process.env.SMTP_USER,
+        pass: process.env.SMTP_PASS
     }
 });
-
 transporter.verify((err, success) => {
     if (err) {
         console.log("SMTP Error:", err);
@@ -207,7 +208,7 @@ console.log("Generated OTP:", otp);
                     console.log("Sending OTP:", otp);
                     // Send Mail
                     let mailOptions = {
-                        from: process.env.EMAIL,
+                        from: process.env.SENDER_EMAIL,
                         to: email,
                         subject: "CareConnect Email Verification",
                         html: `
