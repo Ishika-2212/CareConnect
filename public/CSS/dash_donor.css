@@ -57,22 +57,6 @@ body{
     height: 25px;
 }
 
-.logout-btn{
-    background: linear-gradient(135deg,#ff4d4d,#d90429);
-    color:#fff;
-    padding:8px 20px;
-    border-radius:25px;
-    text-decoration:none;
-    font-weight:600;
-    transition:0.3s;
-    margin-right:10px;
-}
-
-.logout-btn:hover{
-    transform:translateY(-2px);
-    box-shadow:0 8px 18px rgba(217,4,41,.4);
-    color:#fff;
-}
 /* Logo */
 .logo{
     width:60px;
@@ -89,6 +73,23 @@ body{
     letter-spacing:1px;
 }
 
+.logout-btn{
+    background: linear-gradient(135deg,#ff4d4d,#d90429);
+    color:#fff;
+    border:2px solid white;
+    /* padding:8px 20px;
+    border-radius:25px;
+    text-decoration:none;
+    font-weight:600;
+    transition:0.3s;
+    margin-right:10px; */
+}
+
+.logout-btn:hover{
+
+    box-shadow:0 8px 18px rgba(217,4,41,.4);
+    color:#fff;
+}
 .profile-btn{
     background:white;
     color:#1565C0;
