@@ -160,55 +160,57 @@ app.post("/login", function (req, res) {
         }
     );
 });
-    //---------------------- SEND OTP ----------------------//
-    function generateOTP() {
-        return Math.floor(100000 + Math.random() * 900000).toString();
-    }
-    app.post("/sendOtp", function (req, resp) {
-        let email = req.body.txtEmail;
-        // Check if email already exists
-        mysqlCon.query(
-            "SELECT * FROM users WHERE email=?",
-            [email],
-            function (err, result) {
-                if (err)
-                    return resp.send({
-                        status: false,
-                        message: err.message
-                    });
-                if (result.length > 0) {
-                    return resp.send({
-                        status: false,
-                        message: "Email already registered."
-                    });
-                }
-                // Generate OTP
-                let otp = generateOTP();
-                // OTP valid for 5 minutes
-                let expiry = new Date(Date.now() + 5 * 60 * 1000);
-                // Save OTP
-                mysqlCon.query(
-                    `INSERT INTO email_otp(email,otp,verified,expiry)
+//---------------------- SEND OTP ----------------------//
+function generateOTP() {
+    return Math.floor(100000 + Math.random() * 900000).toString();
+}
+app.post("/sendOtp", function (req, resp) {
+    let email = req.body.txtEmail;
+    // Check if email already exists
+    mysqlCon.query(
+        "SELECT * FROM users WHERE email=?",
+        [email],
+        function (err, result) {
+            if (err)
+                return resp.send({
+                    status: false,
+                    message: err.message
+                });
+            if (result.length > 0) {
+                return resp.send({
+                    status: false,
+                    message: "Email already registered."
+                });
+            }
+            // Generate OTP
+           let otp = generateOTP();
+console.log("Generated OTP:", otp);
+            // OTP valid for 5 minutes
+            let expiry = new Date(Date.now() + 5 * 60 * 1000);
+            // Save OTP
+            mysqlCon.query(
+                `INSERT INTO email_otp(email,otp,verified,expiry)
                  VALUES(?,?,0,?)
                  ON DUPLICATE KEY UPDATE
                  otp=?,
                  verified=0,
                  expiry=?`,
-                    [email, otp, expiry, otp, expiry],
-                    function (err) {
-                        if (err) {
-                            console.log(err);
-                            return resp.send({
-                                status: false,
-                                message: "Unable to save OTP."
-                            });
-                        }
-                        // Send Mail
-                        let mailOptions = {
-                            from: process.env.EMAIL,
-                            to: email,
-                            subject: "CareConnect Email Verification",
-                            html: `
+                [email, otp, expiry, otp, expiry],
+                function (err) {
+                    if (err) {
+                        console.log(err);
+                        return resp.send({
+                            status: false,
+                            message: "Unable to save OTP."
+                        });
+                    }
+                    console.log("Sending OTP:", otp);
+                    // Send Mail
+                    let mailOptions = {
+                        from: process.env.EMAIL,
+                        to: email,
+                        subject: "CareConnect Email Verification",
+                        html: `
                         <div style="font-family:Arial;padding:20px">
                             <h2>Email Verification</h2>
                             <p>Hello,</p>
@@ -220,23 +222,23 @@ app.post("/login", function (req, res) {
                             <p>Thank you</p>
                             <b>CareConnect Team</b>
                         </div>`
-                        };
-                        transporter.sendMail(mailOptions, function (err, info) {
-                            if (err) {
-                                console.log(err);
-                                return resp.send({
-                                    status: false,
-                                    message: "OTP could not be sent."
-                                });
-                            }
-                            resp.send({
-                                status: true,
-                                message: "OTP sent successfully."
+                    };
+                    transporter.sendMail(mailOptions, function (err, info) {
+                        if (err) {
+                            console.log(err);
+                            return resp.send({
+                                status: false,
+                                message: "OTP could not be sent."
                             });
+                        }
+                        resp.send({
+                            status: true,
+                            message: "OTP sent successfully."
                         });
                     });
-            });
-    });
+                });
+        });
+});
 //---------------------- VERIFY OTP ----------------------//
 
 app.post("/verifyOtp", function (req, resp) {
@@ -282,14 +284,16 @@ app.post("/verifyOtp", function (req, resp) {
             }
 
             // Wrong OTP
-            if (otp != dbOTP) {
+            console.log("User OTP     :", "[" + otp + "]");
+            console.log("Database OTP :", "[" + dbOTP + "]");
+
+            if (otp.toString().trim() !== dbOTP.toString().trim()) {
 
                 return resp.send({
                     status: false,
                     message: "Invalid OTP."
                 });
             }
-
             // Correct OTP
             mysqlCon.query(
                 "UPDATE email_otp SET verified=1 WHERE email=?",
