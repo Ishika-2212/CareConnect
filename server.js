@@ -32,8 +32,7 @@ const nodemailer = require("nodemailer");
 const transporter = nodemailer.createTransport({
     host: process.env.SMTP_HOST,
     port: 465,
-    secure: false,      // IMPORTANT
-    requireTLS: true,   // Add this
+    secure: true,      // <-- Change this to true
     auth: {
         user: process.env.SMTP_USER,
         pass: process.env.SMTP_PASS,
@@ -50,6 +49,22 @@ transporter.verify((err, success) => {
         console.log("SMTP Error:", err);
     } else {
         console.log("SMTP Server Ready");
+    }
+});
+app.get("/test-mail", async (req, res) => {
+    try {
+        const info = await transporter.sendMail({
+            from: '"CareConnect" <ishika.dev654@gmail.com>',
+            to: "goyal.ishika65@gmail.com",
+            subject: "SMTP Test",
+            text: "Hello from Render!"
+        });
+
+        console.log("Mail sent:", info);
+        res.json(info);
+    } catch (err) {
+        console.error("Mail Error:", err);
+        res.status(500).json(err);
     }
 });
 //-----------------------------------------------------------------//
