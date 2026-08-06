@@ -104,7 +104,7 @@ app.post("/signup", function (req, resp) {
                     // Send Welcome Email
                     let mailOptions = {
 
-                        from: process.env.SMTP_USER,
+                        from:  '"CareConnect" <ishika.dev654@gmail.com>',
 
                         to: email,
 
