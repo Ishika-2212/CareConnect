@@ -31,14 +31,13 @@ console.log("PASS:", process.env.SMTP_PASS ? "Present" : "Missing");
 const nodemailer = require("nodemailer");
 const transporter = nodemailer.createTransport({
     host: process.env.SMTP_HOST,
-    port: Number(process.env.SMTP_PORT),
-    secure: false, // <-- Change this
+    port: 465,
+    secure: false,      // IMPORTANT
+    requireTLS: true,   // Add this
     auth: {
         user: process.env.SMTP_USER,
         pass: process.env.SMTP_PASS,
     },
-    logger: true,
-    debug: true,
 });
 const dns = require("dns");
 
