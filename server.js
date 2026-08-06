@@ -24,47 +24,21 @@ mysqlCon.connect(function (err) {
         console.log(err.message);
 })
 //--------------------------------------------//
-console.log("HOST:", process.env.SMTP_HOST);
-console.log("PORT:", process.env.SMTP_PORT);
-console.log("USER:", process.env.SMTP_USER);
-console.log("PASS:", process.env.SMTP_PASS ? "Present" : "Missing");
 const nodemailer = require("nodemailer");
 const transporter = nodemailer.createTransport({
     host: process.env.SMTP_HOST,
-    port: 465,
-    secure: true,      // <-- Change this to true
+    port: 587,
+    secure: false,
     auth: {
         user: process.env.SMTP_USER,
-        pass: process.env.SMTP_PASS,
-    },
-});
-const dns = require("dns");
-
-dns.lookup(process.env.SMTP_HOST, (err, address) => {
-    console.log("DNS Error:", err);
-    console.log("Resolved IP:", address);
+        pass: process.env.SMTP_PASS
+    }
 });
 transporter.verify((err, success) => {
     if (err) {
         console.log("SMTP Error:", err);
     } else {
         console.log("SMTP Server Ready");
-    }
-});
-app.get("/test-mail", async (req, res) => {
-    try {
-        const info = await transporter.sendMail({
-            from: '"CareConnect" <ishika.dev654@gmail.com>',
-            to: "goyal.ishika65@gmail.com",
-            subject: "SMTP Test",
-            text: "Hello from Render!"
-        });
-
-        console.log("Mail sent:", info);
-        res.json(info);
-    } catch (err) {
-        console.error("Mail Error:", err);
-        res.status(500).json(err);
     }
 });
 //-----------------------------------------------------------------//
@@ -115,45 +89,6 @@ app.post("/signup", function (req, resp) {
                                 console.log(err);
                         }
                     );
-
-                    // Send Welcome Email
-                    let mailOptions = {
-
-                        from:  '"CareConnect" <ishika.dev654@gmail.com>',
-
-                        to: email,
-
-                        subject: "Welcome to CareConnect",
-
-                        html: `
-                        <h2>Hello ${email}</h2>
-
-                        <p>Your account has been created successfully.</p>
-
-                        <p>Thank you for registering with <b>CareConnect</b>.</p>
-
-                        <p>You can now login and start using the platform.</p>
-
-                        <br>
-
-                        <b>Regards,</b><br>
-                        CareConnect Team
-                        `
-                    };
-
-                    transporter.sendMail(mailOptions, function (err, info) {
-
-                        if (err) {
-                            console.log("Mail Error:", err);
-                            return resp.send("User Registered but Email Not Sent");
-                        }
-
-                        console.log("Mail Sent:", info.response);
-
-                        resp.send("success");
-
-                    });
-
                 }
             );
 
@@ -186,163 +121,6 @@ app.post("/login", function (req, res) {
             res.send(result[0].utype);
         }
     );
-});
-//---------------------- SEND OTP ----------------------//
-function generateOTP() {
-    return Math.floor(100000 + Math.random() * 900000).toString();
-}
-app.post("/sendOtp", function (req, resp) {
-    let email = req.body.txtEmail;
-    // Check if email already exists
-    mysqlCon.query(
-        "SELECT * FROM users WHERE email=?",
-        [email],
-        function (err, result) {
-            if (err)
-                return resp.send({
-                    status: false,
-                    message: err.message
-                });
-            if (result.length > 0) {
-                return resp.send({
-                    status: false,
-                    message: "Email already registered."
-                });
-            }
-            // Generate OTP
-           let otp = generateOTP();
-console.log("Generated OTP:", otp);
-            // OTP valid for 5 minutes
-            let expiry = new Date(Date.now() + 5 * 60 * 1000);
-            // Save OTP
-            mysqlCon.query(
-                `INSERT INTO email_otp(email,otp,verified,expiry)
-                 VALUES(?,?,0,?)
-                 ON DUPLICATE KEY UPDATE
-                 otp=?,
-                 verified=0,
-                 expiry=?`,
-                [email, otp, expiry, otp, expiry],
-                function (err) {
-                    if (err) {
-                        console.log(err);
-                        return resp.send({
-                            status: false,
-                            message: "Unable to save OTP."
-                        });
-                    }
-                    console.log("Sending OTP:", otp);
-                    // Send Mail
-                    let mailOptions = {
-                        from: process.env.SENDER_EMAIL,
-                        to: email,
-                        subject: "CareConnect Email Verification",
-                        html: `
-                        <div style="font-family:Arial;padding:20px">
-                            <h2>Email Verification</h2>
-                            <p>Hello,</p>
-                            <p>Your OTP for CareConnect registration is</p>
-                            <h1 style="color:#2563eb;">${otp}</h1>
-                            <p>This OTP is valid for <b>5 minutes</b>.</p>
-                            <p>Do not share this OTP with anyone.</p>
-                            <br>
-                            <p>Thank you</p>
-                            <b>CareConnect Team</b>
-                        </div>`
-                    };
-                    transporter.sendMail(mailOptions, function (err, info) {
-                        if (err) {
-                            console.log(err);
-                            return resp.send({
-                                status: false,
-                                message: "OTP could not be sent."
-                            });
-                        }
-                        resp.send({
-                            status: true,
-                            message: "OTP sent successfully."
-                        });
-                    });
-                });
-        });
-});
-//---------------------- VERIFY OTP ----------------------//
-
-app.post("/verifyOtp", function (req, resp) {
-
-    let email = req.body.txtEmail;
-    let otp = req.body.txtOTP;
-
-    mysqlCon.query(
-        "SELECT * FROM email_otp WHERE email=?",
-        [email],
-        function (err, result) {
-
-            if (err) {
-                return resp.send({
-                    status: false,
-                    message: err.message
-                });
-            }
-
-            if (result.length == 0) {
-                return resp.send({
-                    status: false,
-                    message: "Please generate OTP first."
-                });
-            }
-
-            let dbOTP = result[0].otp;
-            let expiry = new Date(result[0].expiry);
-            let currentTime = new Date();
-
-            // OTP Expired
-            if (currentTime > expiry) {
-
-                mysqlCon.query(
-                    "DELETE FROM email_otp WHERE email=?",
-                    [email]
-                );
-
-                return resp.send({
-                    status: false,
-                    message: "OTP Expired. Please generate a new OTP."
-                });
-            }
-
-            // Wrong OTP
-            console.log("User OTP     :", "[" + otp + "]");
-            console.log("Database OTP :", "[" + dbOTP + "]");
-
-            if (otp.toString().trim() !== dbOTP.toString().trim()) {
-
-                return resp.send({
-                    status: false,
-                    message: "Invalid OTP."
-                });
-            }
-            // Correct OTP
-            mysqlCon.query(
-                "UPDATE email_otp SET verified=1 WHERE email=?",
-                [email],
-                function (err) {
-
-                    if (err) {
-                        return resp.send({
-                            status: false,
-                            message: err.message
-                        });
-                    }
-
-                    resp.send({
-                        status: true,
-                        message: "Email Verified Successfully."
-                    });
-
-                });
-
-        });
-
 });
 //------------------------------------------------------------//
 app.get("/checkEmail", function (req, resp) {
