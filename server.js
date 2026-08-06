@@ -27,8 +27,11 @@ mysqlCon.connect(function (err) {
 const nodemailer = require("nodemailer");
 const transporter = nodemailer.createTransport({
     host: process.env.SMTP_HOST,
-    port: 587,
+    port: Number(process.env.SMTP_PORT),
     secure: false,
+    connectionTimeout: 30000,
+    greetingTimeout: 30000,
+    socketTimeout: 30000,
     auth: {
         user: process.env.SMTP_USER,
         pass: process.env.SMTP_PASS
