@@ -24,18 +24,27 @@ mysqlCon.connect(function (err) {
         console.log(err.message);
 })
 //--------------------------------------------//
+console.log("HOST:", process.env.SMTP_HOST);
+console.log("PORT:", process.env.SMTP_PORT);
+console.log("USER:", process.env.SMTP_USER);
+console.log("PASS:", process.env.SMTP_PASS ? "Present" : "Missing");
 const nodemailer = require("nodemailer");
 const transporter = nodemailer.createTransport({
     host: process.env.SMTP_HOST,
     port: Number(process.env.SMTP_PORT),
     secure: false,
-    connectionTimeout: 30000,
-    greetingTimeout: 30000,
-    socketTimeout: 30000,
     auth: {
         user: process.env.SMTP_USER,
         pass: process.env.SMTP_PASS
-    }
+    },
+    logger: true,
+    debug: true
+});
+const dns = require("dns");
+
+dns.lookup(process.env.SMTP_HOST, (err, address) => {
+    console.log("DNS Error:", err);
+    console.log("Resolved IP:", address);
 });
 transporter.verify((err, success) => {
     if (err) {
