@@ -152,64 +152,8 @@
           $("#txtPwd2").prop("type", "password")
         }
       })
-      $("#btnSignup").prop("disabled", true);
       //------------------------------------------------
-      // For sending OTP
-      $("#btnSendOTP").click(function () {
-        $.ajax({
-          type: "POST",
-          url: "/sendOtp",
-          data: {
-            txtEmail: $("#txtEmail").val()
-          }
-        }).done(function (response) {
-          if (response.status) {
-            $("#otpMsg")
-              .html("<span class='text-primary'><i class='bi bi-envelope-check-fill'></i> OTP sent successfully. Please check your email.</span>");
-          }
-          else {
-            $("#otpMsg")
-              .html("<span class='text-danger'>" + response.message + "</span>");
-          }
-        });
-      });
-      // For verifying OTP
-      $("#btnVerifyOTP").click(function () {
-        $.ajax({
-          type: "POST",
-          url: "/verifyOtp",
-          data: {
-            txtEmail: $("#txtEmail").val(),
-            txtOTP: $("#txtOTP").val()
-          }
-        }).done(function (response) {
-          if (response.status) {
-            $("#otpMsg").html(
-              "<span class='text-success'><i class='bi bi-check-circle-fill'></i> Email Verified Successfully</span>"
-            );
-            $("#btnSignup").prop("disabled", false);
-            $("#btnVerifyOTP").prop("disabled", true);
-            $("#btnSendOTP").prop("disabled", true);
-          }
-          else {
-            $("#otpMsg").html(
-              "<span class='text-danger'><i class='bi bi-x-circle-fill'></i> " +
-              response.message +
-              "</span>"
-            );
-
-          }
-
-        });
-      });
-      // Reset OTP and buttons when email input changes
-      $("#txtEmail").on("input", function () {
-        $("#btnSignup").prop("disabled", true);
-        $("#btnVerifyOTP").prop("disabled", false);
-        $("#btnSendOTP").prop("disabled", false);
-        $("#txtOTP").val("");
-        $("#otpMsg").html("");
-      });
+      
       //------------------------------------------------
     });
   </script>
