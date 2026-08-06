@@ -32,13 +32,13 @@ const nodemailer = require("nodemailer");
 const transporter = nodemailer.createTransport({
     host: process.env.SMTP_HOST,
     port: Number(process.env.SMTP_PORT),
-    secure: true,
+    secure: false, // <-- Change this
     auth: {
         user: process.env.SMTP_USER,
-        pass: process.env.SMTP_PASS
+        pass: process.env.SMTP_PASS,
     },
     logger: true,
-    debug: true
+    debug: true,
 });
 const dns = require("dns");
 
